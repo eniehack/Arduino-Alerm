@@ -39,6 +39,15 @@ void timeConfig() {
           timeInfo.tm_hour, timeInfo.tm_min, timeInfo.tm_sec));
 }
 
+void displayTime() {
+  char s[20];
+  DateTime now = rtc.now();
+  sprintf(s, "Time: %04d/%02d/%02d %02d:%02d:%02d",
+          now.year(), now.month(), now.day(),
+          now.hour(), now.minute(), now.second());
+  Serial.println(s);
+}
+
 void setup() {  
   Serial.begin(115200);
   delay(1000);
@@ -51,26 +60,19 @@ void setup() {
 }
 
 void loop() {
-  for (int i = 0; i < 255; i++){
-      if (i < 100) {
-        Serial.println(i, DEC);
-        ledcWrite(LEDC_CHANNEL, i);
-        delay(5000);
-      }
-      if (i >= 100) {
-        Serial.println(i, DEC);
-        ledcWrite(LEDC_CHANNEL, i);
-        delay(100);
-      }
-
-      char s[20];
-       
-      DateTime now = rtc.now();
-      sprintf(s, "Time: %04d/%02d/%02d %02d:%02d:%02d",
-              now.year(), now.month(), now.day(),
-              now.hour(), now.minute(), now.second());
-      Serial.println(s);
-  }
+    for (int i = 0; i < 255; i++){
+        if (i < 100) {
+          Serial.println(i, DEC);
+          ledcWrite(LEDC_CHANNEL, i);
+          delay(5000);
+        }
+        if (i >= 100) {
+          Serial.println(i, DEC);
+          ledcWrite(LEDC_CHANNEL, i);
+          delay(100);
+        }
+        displaytime();
+    }
 }
 /*
 void snooze() {
