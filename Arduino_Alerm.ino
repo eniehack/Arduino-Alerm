@@ -1,5 +1,4 @@
 #include "WiFi.h"
-#include "Wire.h"
 #include <RTClib.h>
 
 RTC_DS3231 rtc;
@@ -9,10 +8,7 @@ const int LED = 16;
 const int freq = 5000;
 const int resolution = 8;
 
-void setup() {
-  Wire.begin(21,22);
-  delay(10);
-  
+void setup() {  
   Serial.begin(115200);
   delay(1000);
 
