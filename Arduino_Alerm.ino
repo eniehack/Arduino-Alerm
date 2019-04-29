@@ -36,6 +36,12 @@ void setup() {
 
   configTime(9 * 3600L, 0, "ntp.nict.jp", "time.google.com", "ntp.jst.mfeed.ad.jp");
   delay(1000);
+  struct tm timeInfo;
+  getLocalTime(&timeInfo);
+
+  rtc.begin();
+  rtc.adjust(DateTime(timeInfo.tm_year + 1900, timeInfo.tm_mon + 1, timeInfo.tm_mday,
+          timeInfo.tm_hour, timeInfo.tm_min, timeInfo.tm_sec));
   
   ledcSetup(LEDC_CHANNEL, freq, resolution);
   ledcAttachPin(LED, LEDC_CHANNEL);
@@ -53,13 +59,13 @@ void loop() {
         ledcWrite(LEDC_CHANNEL, i);
         delay(100);
       }
-      struct tm timeInfo;
+
       char s[20];
        
-      getLocalTime(&timeInfo);
-      sprintf(s, " %04d/%02d/%02d %02d:%02d:%02d",
-              timeInfo.tm_year + 1900, timeInfo.tm_mon + 1, timeInfo.tm_mday,
-              timeInfo.tm_hour, timeInfo.tm_min, timeInfo.tm_sec);
+      DateTime now = rtc.now();
+      sprintf(s, "Time: %04d/%02d/%02d %02d:%02d:%02d",
+              now.year(), now.month(), now.day(),
+              now.hour(), now.minute(), now.second());
       Serial.println(s);
   }
 }
