@@ -9,6 +9,8 @@ const int freq = 5000;
 const int resolution = 8;
 uint8_t alerm_hour = 18;
 uint8_t alerm_minute = 55;
+uint8_t ntp_refresh_hour = 0;
+uint8_t ntp_refresh_minute = 0;
 
 void wifiConfig() {
   WiFi.mode(WIFI_AP_STA);
@@ -79,6 +81,9 @@ void loop() {
       //displayTime();
     }
     ledcWrite(LEDC_CHANNEL, 0);
+  }
+  if (now.hour() == ntp_refresh_hour && now.minute() == ntp_refresh_minute) {
+    timeConfig();
   }
   //displayTime();
 }
